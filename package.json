@@ -1,0 +1,20 @@
+{
+  "name": "js-pwa-boilerplate",
+  "version": "1.0.0",
+  "description": "Vanilla JS + PWA boilerplate",
+  "main": "index.js",
+  "scripts": {
+    "start": "http-server -c-1"
+  },
+  "keywords": [
+    "pwa",
+    "progressive",
+    "web",
+    "app"
+  ],
+  "author": "Maria Zayed",
+  "license": "ISC",
+  "devDependencies": {
+    "http-server": "^0.9.0"
+  }
+}
