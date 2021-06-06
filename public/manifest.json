@@ -1,5 +1,5 @@
 {
-  "name": "Progressive Web App boilerplate with vanilla JS",
+  "name": "Progressive Web App with vanilla JS",
   "short_name": "PWA_JS",
   "start_url": "/index.html",
   "scope": ".",

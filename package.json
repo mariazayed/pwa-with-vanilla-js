@@ -1,7 +1,7 @@
 {
-  "name": "js-pwa-boilerplate",
+  "name": "js-pwa",
   "version": "1.0.0",
-  "description": "Vanilla JS + PWA boilerplate",
+  "description": "Vanilla JS + PWA",
   "main": "index.js",
   "scripts": {
     "start": "http-server -c-1"
