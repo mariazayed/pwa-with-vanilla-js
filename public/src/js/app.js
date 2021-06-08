@@ -38,6 +38,20 @@ function plusButtonClicked() {
 let plusButton = document.querySelector('#plus-button');
 plusButton.addEventListener('click', plusButtonClicked);
 
+let xhr = new XMLHttpRequest()
+xhr.open('GET', 'https://httpbin.org/ip')
+xhr.responseType = 'json'
+
+xhr.onload = () => {
+	console.log("XHR response:", xhr.response)
+}
+
+xhr.onerror = () => {
+	console.log("XHR error")
+}
+
+xhr.send()
+
 // Get the user's IP address
 // API reference: http://httpbin.org/
 fetch('https://httpbin.org/ip')
