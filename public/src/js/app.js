@@ -37,3 +37,17 @@ function plusButtonClicked() {
 
 let plusButton = document.querySelector('#plus-button');
 plusButton.addEventListener('click', plusButtonClicked);
+
+// Get the user's IP address
+// API reference: http://httpbin.org/
+fetch('https://httpbin.org/ip')
+	.then(response => {
+		console.log("RES", response)
+		return response.json()
+	})
+	.then(response => {
+		console.log(response)
+	})
+	.catch(err => {
+		console.log("ERR", err)
+	})
