@@ -8,3 +8,32 @@ if ('serviceWorker' in navigator) {
 		         console.error(error)
 	         })
 }
+
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (event) => {
+	console.log("BEFORE INSTALL PROMPT FIRES");
+	// event.preventDefault()
+	deferredPrompt = event
+	return false
+})
+
+
+function plusButtonClicked() {
+	if (deferredPrompt) {
+		deferredPrompt.prompt()
+		deferredPrompt.userChoice.then((res) => {
+			console.log("RES", res)
+			if (res.outcome === 'dismissed') {
+				console.log("USER CANCELED INSTALLATION");
+			} else {
+				console.log("USER ADDED TO HOME SCREEN");
+			}
+		})
+
+		deferredPrompt = null
+	}
+}
+
+let plusButton = document.querySelector('#plus-button');
+plusButton.addEventListener('click', plusButtonClicked);
