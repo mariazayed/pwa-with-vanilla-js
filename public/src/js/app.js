@@ -1,3 +1,8 @@
+// Add the promise object to the browser if it doesn't support it by default (for older browsers)
+if (!window.Promise) {
+	window.Promise = Promise
+}
+
 // Checking if the service worker available in the browser
 if ('serviceWorker' in navigator) {
 	navigator.serviceWorker.register("/service-worker.js")
