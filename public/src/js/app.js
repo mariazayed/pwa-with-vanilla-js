@@ -17,7 +17,7 @@ if ('serviceWorker' in navigator) {
 let deferredPrompt;
 
 window.addEventListener('beforeinstallprompt', (event) => {
-	console.log("BEFORE INSTALL PROMPT FIRES");
+	// console.log("BEFORE INSTALL PROMPT FIRES");
 	// event.preventDefault()
 	deferredPrompt = event
 	return false
@@ -28,7 +28,7 @@ function plusButtonClicked() {
 	if (deferredPrompt) {
 		deferredPrompt.prompt()
 		deferredPrompt.userChoice.then((res) => {
-			console.log("RES", res)
+			// console.log("RES", res)
 			if (res.outcome === 'dismissed') {
 				console.log("USER CANCELED INSTALLATION");
 			} else {
@@ -42,52 +42,3 @@ function plusButtonClicked() {
 
 let plusButton = document.querySelector('#plus-button');
 plusButton.addEventListener('click', plusButtonClicked);
-
-let xhr = new XMLHttpRequest()
-xhr.open('GET', 'https://httpbin.org/ip')
-xhr.responseType = 'json'
-
-xhr.onload = () => {
-	console.log("XHR response:", xhr.response)
-}
-
-xhr.onerror = () => {
-	console.log("XHR error")
-}
-
-xhr.send()
-
-// Get the user's IP address
-// API reference: http://httpbin.org/
-fetch('https://httpbin.org/ip')
-	.then(response => {
-		console.log("RES", response)
-		return response.json()
-	})
-	.then(response => {
-		console.log(response)
-	})
-	.catch(err => {
-		console.log("ERR", err)
-	})
-
-// API reference: http://httpbin.org/
-fetch('https://httpbin.org/post', {
-	method: "POST",
-	headers: {
-		'Content-type': 'application/json',
-		'Accept': 'application/json'
-	},
-	mode: 'cors',
-	body: JSON.stringify({message: "Does this work?"})
-})
-	.then(response => {
-		console.log("RES", response)
-		return response.json()
-	})
-	.then(response => {
-		console.log(response)
-	})
-	.catch(err => {
-		console.log("ERR", err)
-	})
