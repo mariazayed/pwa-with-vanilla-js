@@ -25,6 +25,17 @@ window.addEventListener('beforeinstallprompt', (event) => {
 
 
 function plusButtonClicked() {
+	// Unregister the service worker(s)
+	if ('serviceWorker' in navigator) {
+		navigator.serviceWorker.getRegistrations()
+		         .then(registrations => {
+			         console.log("registrations", registrations);
+			         registrations.forEach(reg => {
+				         reg.unregister()
+			         })
+		         })
+	}
+
 	if (deferredPrompt) {
 		deferredPrompt.prompt()
 		deferredPrompt.userChoice.then((res) => {
