@@ -46,6 +46,19 @@ plusButton.addEventListener('click', plusButtonClicked);
 
 var sharedMomentsArea = document.querySelector('#shared-moments');
 
+function onSaveButtonClicked(event) {
+	console.log("CLICKED");
+	// Check if the caches supported by the browser
+	if ('caches' in window) {
+		caches.open('user-requested')
+		      .then(cache => {
+			      // cache.add('https://httpbin.org/get')
+			      // cache.add('/src/images/sf-boat.jpg')
+		      })
+		      .catch()
+	}
+}
+
 function createCard() {
 	var cardWrapper = document.createElement('div');
 	cardWrapper.className = 'shared-moment-card mdl-card mdl-shadow--2dp';
@@ -58,20 +71,53 @@ function createCard() {
 	var cardTitleTextElement = document.createElement('h2');
 	cardTitleTextElement.className = 'mdl-card__title-text';
 	cardTitleTextElement.textContent = 'San Francisco Trip';
+	cardTitleTextElement.style.color = 'white'
 	cardTitle.appendChild(cardTitleTextElement);
 	var cardSupportingText = document.createElement('div');
 	cardSupportingText.className = 'mdl-card__supporting-text';
 	cardSupportingText.textContent = 'In San Francisco';
 	cardSupportingText.style.textAlign = 'center';
+	var cardSaveButton = document.createElement('button')
+	cardSaveButton.textContent = 'Save'
+	cardSaveButton.addEventListener('click', onSaveButtonClicked)
+	cardSupportingText.appendChild(cardSaveButton)
 	cardWrapper.appendChild(cardSupportingText);
 	componentHandler.upgradeElement(cardWrapper);
 	sharedMomentsArea.appendChild(cardWrapper);
 }
 
-fetch('https://httpbin.org/get')
+function clearCards() {
+	while (sharedMomentsArea.hasChildNodes()) {
+		sharedMomentsArea.removeChild(sharedMomentsArea.lastChild)
+	}
+}
+
+const url = 'https://httpbin.org/get'
+let isNetworkDataReceived = false
+
+fetch(url)
 	.then(function (res) {
+		isNetworkDataReceived = true
 		return res.json();
 	})
 	.then(function (data) {
+		clearCards()
 		createCard();
 	});
+
+// Check if the caches supported by the browser
+if ('caches' in window) {
+	caches.match(url)
+	      .then(response => {
+		      if (response) {
+			      return response.json()
+		      }
+	      })
+	      .then(data => {
+		      console.log("data", data);
+		      if (!isNetworkDataReceived) {
+			      clearCards()
+			      createCard()
+		      }
+	      })
+}
