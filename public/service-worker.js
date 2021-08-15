@@ -12,18 +12,18 @@ const STATIC_FILES = ['/',
                       'https://fonts.googleapis.com/icon?family=Material+Icons',
                       'https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.3.0/material.indigo-pink.min.css']
 
-function trimCache(cacheName, maxItems) {
-	caches.open(cacheName)
-	      .then(cache => {
-		      return cache.keys()
-		                  .then(keys => {
-			                  if (keys.length > maxItems) {
-				                  caches.delete(keys[0])
-				                        .then(trimCache(cacheName, maxItems))
-			                  }
-		                  })
-	      })
-}
+// function trimCache(cacheName, maxItems) {
+// 	caches.open(cacheName)
+// 	      .then(cache => {
+// 		      return cache.keys()
+// 		                  .then(keys => {
+// 			                  if (keys.length > maxItems) {
+// 				                  caches.delete(keys[0])
+// 				                        .then(trimCache(cacheName, maxItems))
+// 			                  }
+// 		                  })
+// 	      })
+// }
 
 self.addEventListener('install', (event) => {
 	event.waitUntil(
@@ -72,7 +72,7 @@ self.addEventListener('fetch', (event) => {
 			      .then(cache => {
 				      return fetch(event.request)
 					      .then(res => {
-						      trimCache(CACHE_DYNAMIC_NAME, 3)
+						      // trimCache(CACHE_DYNAMIC_NAME, 3)
 						      cache.put(event.request, res.clone())
 						      return res
 					      })
