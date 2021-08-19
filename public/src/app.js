@@ -19,7 +19,6 @@ if ('serviceWorker' in navigator) {
 let deferredPrompt;
 
 window.addEventListener('beforeinstallprompt', (e) => {
-	console.log("e", e);
 	// Prevent the mini-infobar from appearing on mobile
 	e.preventDefault();
 	// Stash the event so it can be triggered later.
@@ -137,18 +136,36 @@ function updateUI(data) {
 const url = 'https://httpbin.org/get'
 let isNetworkDataReceived = false
 
-fetch(url)
-	.then(function (res) {
-		isNetworkDataReceived = true
-		return res.json();
-	})
-	.then(function (data) {
-		let dataArray = []
-		for (let key in data) {
-			dataArray.push(data[key])
-		}
-		updateUI(dataArray)
-	});
+// fetch(url, {
+// 	method: 'POST',
+// 	headers: {
+// 		'Content-Type': 'application/json',
+// 		'Accept': 'application/json'
+// 	},
+// 	body: JSON.stringify({
+// 		                     message: 'Some message'
+// 	                     })
+// })
+// 	.then(function (res) {
+// 		return res.json();
+// 	})
+// 	.then(function (data) {
+// 		networkDataReceived = true;
+// 		console.log('From web', data);
+// 		updateUI(data)
+// 	})
+// fetch(url)
+// 	.then(function (res) {
+// 		isNetworkDataReceived = true
+// 		return res.json();
+// 	})
+// 	.then(function (data) {
+// 		let dataArray = []
+// 		for (let key in data) {
+// 			dataArray.push(data[key])
+// 		}
+// 		updateUI(dataArray)
+// 	});
 
 // Check if the caches supported by the browser
 if ('caches' in window) {
@@ -160,12 +177,13 @@ if ('caches' in window) {
 	      })
 	      .then(data => {
 		      // console.log("data", data);
-		      if (!isNetworkDataReceived) {
-			      let dataArray = []
-			      for (let key in data) {
-				      dataArray.push(data[key])
-			      }
-			      updateUI(dataArray)
-		      }
+		      // if (!isNetworkDataReceived) {
+		      //     let dataArray = []
+		      //     for (let key in data) {
+		      //       dataArray.push(data[key])
+		      //     }
+		      //     console.log("dataArray", dataArray);
+		      //     updateUI(dataArray)
+		      // }
 	      })
 }

@@ -2,39 +2,39 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		<meta name="viewport"
-		      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+		      name="viewport">
+		<meta content="ie=edge" http-equiv="X-UA-Compatible">
 		<title>PWA + vanilla JS</title>
 		<link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
-		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-		<link rel="stylesheet"
-		      href="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.3.0/material.indigo-pink.min.css">
-		<link rel="stylesheet"
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.3.0/material.indigo-pink.min.css"
+		      rel="stylesheet">
+		<link crossorigin="anonymous"
 		      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
 		      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-		      crossorigin="anonymous">
-		<link rel="stylesheet" href="/src/css/app.css">
-		<link rel="manifest" href="/manifest.json">
+		      rel="stylesheet">
+		<link href="/src/css/app.css" rel="stylesheet">
+		<link href="/manifest.json" rel="manifest">
 
 		<!-- Properties for safari / iOS specific -->
-		<meta name="apple-mobile-web-app-capable" content="yes">
-		<meta name="apple-mobile-web-app-status-bar-style" content="black">
-		<meta name="apple-mobile-web-app-title" content="PWA_IG">
-		<link rel="apple-touch-icon" href="/src/images/icons/apple-icons/app-icon-57X57.png" sizes="57x57">
-		<link rel="apple-touch-icon" href="/src/images/icons/apple-icons/app-icon-60X60.png" sizes="60x60">
-		<link rel="apple-touch-icon" href="/src/images/icons/apple-icons/app-icon-72X72.png" sizes="72x72">
-		<link rel="apple-touch-icon" href="/src/images/icons/apple-icons/app-icon-76X76.png" sizes="76x76">
-		<link rel="apple-touch-icon" href="/src/images/icons/apple-icons/app-icon-114X114.png" sizes="114x114">
-		<link rel="apple-touch-icon" href="/src/images/icons/apple-icons/app-icon-120X120.png" sizes="120x120">
-		<link rel="apple-touch-icon" href="/src/images/icons/apple-icons/app-icon-144X144.png" sizes="144x144">
-		<link rel="apple-touch-icon" href="/src/images/icons/apple-icons/app-icon-152X152.png" sizes="152x152">
-		<link rel="apple-touch-icon" href="/src/images/icons/apple-icons/app-icon-180X180.png" sizes="180x180">
+		<meta content="yes" name="apple-mobile-web-app-capable">
+		<meta content="black" name="apple-mobile-web-app-status-bar-style">
+		<meta content="PWA_IG" name="apple-mobile-web-app-title">
+		<link href="/src/images/icons/apple-icons/app-icon-57X57.png" rel="apple-touch-icon" sizes="57x57">
+		<link href="/src/images/icons/apple-icons/app-icon-60X60.png" rel="apple-touch-icon" sizes="60x60">
+		<link href="/src/images/icons/apple-icons/app-icon-72X72.png" rel="apple-touch-icon" sizes="72x72">
+		<link href="/src/images/icons/apple-icons/app-icon-76X76.png" rel="apple-touch-icon" sizes="76x76">
+		<link href="/src/images/icons/apple-icons/app-icon-114X114.png" rel="apple-touch-icon" sizes="114x114">
+		<link href="/src/images/icons/apple-icons/app-icon-120X120.png" rel="apple-touch-icon" sizes="120x120">
+		<link href="/src/images/icons/apple-icons/app-icon-144X144.png" rel="apple-touch-icon" sizes="144x144">
+		<link href="/src/images/icons/apple-icons/app-icon-152X152.png" rel="apple-touch-icon" sizes="152x152">
+		<link href="/src/images/icons/apple-icons/app-icon-180X180.png" rel="apple-touch-icon" sizes="180x180">
 
 		<!-- Internet explorer properties (for old versions) -->
-		<meta name="msapplication-TileImage" content="/src/images/icons/app-icons/app-icon-144X144.png">
-		<meta name="msapplication-TileColor" content="#fff">
-		<meta name="theme-color" content="#3f51b5">
+		<meta content="/src/images/icons/app-icons/app-icon-144X144.png" name="msapplication-TileImage">
+		<meta content="#fff" name="msapplication-TileColor">
+		<meta content="#3f51b5" name="theme-color">
 	</head>
 	<body>
 		<div id="app">
@@ -88,8 +88,8 @@
 						<form>
 							<div class="input-section mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
 								<input class="mdl-textfield__input"
-								       type="text"
-								       id="title">
+								       id="title"
+								       type="text">
 								<label class="mdl-textfield__label"
 								       for="title"
 								       name="title">Title
@@ -97,7 +97,7 @@
 							</div>
 							<div class="input-section mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
 							     id="manual-location">
-								<input class="mdl-textfield__input" type="text" id="location">
+								<input class="mdl-textfield__input" id="location" type="text">
 								<label class="mdl-textfield__label"
 								       for="location"
 								       name="location">Location
@@ -106,7 +106,7 @@
 							<br>
 							<div>
 								<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-color--accent"
-								        type="submit" id="post-btn">Post!
+								        id="post-btn" type="submit">Post!
 								</button>
 							</div>
 						</form>
@@ -116,16 +116,18 @@
 					<br>
 					<br>
 
+					<div id="shared-moments"></div>
+
 					<!-- Post card -->
 					<div class="card" style="width: 18rem;">
-						<img class="card-img-top" src="src/images/nature1.jpg" alt="Card image cap">
+						<img alt="Card image cap" class="card-img-top" src="src/images/nature1.jpg">
 						<div class="card-body">
 							<h5 class="card-title">Card title</h5>
 							<p class="card-text">
 								Some quick example text to build on the card title and make up the bulk of the card's
 								content.
 							</p>
-							<a href="#" class="btn btn-primary" id="save-button">Save for offline access</a>
+							<a class="btn btn-primary" href="#" id="save-button">Save for offline access</a>
 						</div>
 					</div>
 					<!-- Post card ends -->
@@ -143,15 +145,15 @@
 			</div>
 		</div>
 
-		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+		<script crossorigin="anonymous"
 		        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-		        crossorigin="anonymous"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+		        src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+		<script crossorigin="anonymous"
 		        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-		        crossorigin="anonymous"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+		        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+		<script crossorigin="anonymous"
 		        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-		        crossorigin="anonymous"></script>
+		        src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 		<script defer src="/src/js/material.min.js"></script>
 		<script defer src="/src/js/fetch.js"></script>
 		<script defer src="/src/js/promise.js"></script>
