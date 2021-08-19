@@ -27,7 +27,6 @@ window.addEventListener('beforeinstallprompt', (e) => {
 	// Update UI notify the user they can install the PWA
 	// showInstallPromotion();
 	// Optionally, send analytics event that PWA install promo was shown.
-	console.log(`'beforeinstallprompt' event was fired.`);
 });
 
 //
@@ -41,7 +40,6 @@ window.addEventListener('beforeinstallprompt', (e) => {
 // })
 
 function showDeferredPrompt() {
-	console.log("deferredPrompt", deferredPrompt);
 	if (deferredPrompt) {
 		deferredPrompt.prompt()
 		deferredPrompt.userChoice.then((res) => {
