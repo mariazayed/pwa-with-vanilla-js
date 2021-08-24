@@ -1,4 +1,5 @@
 importScripts('/src/js/idb.js')
+importScripts('/src/utility.js')
 
 const CACHE_STATIC_NAME = 'static-v2'
 const CACHE_DYNAMIC_NAME = 'dynamic-v2'
@@ -13,15 +14,8 @@ const STATIC_FILES = ['/',
                       '/src/css/app.css',
                       'https://fonts.googleapis.com/css?family=Roboto:400,700',
                       'https://fonts.googleapis.com/icon?family=Material+Icons',
-                      'https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.3.0/material.indigo-pink.min.css']
-
-const dbPromise = idb.open('posts-store', 1, function (db) {
-	if (!db.objectStoreNames.contains('posts')) {
-		db.createObjectStore('posts', {
-			keyPath: 'id'
-		})
-	}
-})
+                      'https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.3.0/material.indigo-pink.min.css'
+]
 
 // Use case: if the cache items exceeded the maximum, delete the oldest cached items
 function deleteCache(cacheName, maxItems) {
@@ -80,12 +74,7 @@ self.addEventListener('fetch', (event) => {
 					clonedRes.json()
 					         .then(data => {
 						         for (const key in data) {
-							         dbPromise.then(db => {
-								         const tx = db.transaction('posts', 'readwrite')
-								         const store = tx.objectStore('posts')
-								         store.put(data[key])
-								         return tx.complete
-							         })
+							         writeData('posts', data[key])
 						         }
 					         })
 					return res
