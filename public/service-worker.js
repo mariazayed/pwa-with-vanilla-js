@@ -1,16 +1,27 @@
+importScripts('/src/js/idb.js')
+
 const CACHE_STATIC_NAME = 'static-v2'
 const CACHE_DYNAMIC_NAME = 'dynamic-v2'
 const STATIC_FILES = ['/',
                       '/index.html',
                       '/offline.html',
                       '/src/js/app.js',
-                      '/src/js/extra/promise.js',
-                      '/src/js/extra/fetch.js',
-                      '/src/js/extra/material.min.js',
+                      '/src/js/idb.js',
+                      '/src/js/promise.js',
+                      '/src/js/fetch.js',
+                      '/src/js/material.min.js',
                       '/src/css/app.css',
                       'https://fonts.googleapis.com/css?family=Roboto:400,700',
                       'https://fonts.googleapis.com/icon?family=Material+Icons',
                       'https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.3.0/material.indigo-pink.min.css']
+
+const dbPromise = idb.open('posts-store', 1, function (db) {
+	if (!db.objectStoreNames.contains('posts')) {
+		db.createObjectStore('posts', {
+			keyPath: 'id'
+		})
+	}
+})
 
 // Use case: if the cache items exceeded the maximum, delete the oldest cached items
 function deleteCache(cacheName, maxItems) {
@@ -57,19 +68,28 @@ self.addEventListener('activate', (event) => {
 	return self.clients.claim()
 })
 
+// With indexed DB
 self.addEventListener('fetch', (event) => {
 	const url = 'https://httpbin.org/get'
 
 	if (event.request.url.indexOf(url) > -1) {
 		event.respondWith(
-			caches.open(CACHE_DYNAMIC_NAME)
-			      .then(cache => {
-				      return fetch(event.request)
-					      .then(res => {
-						      cache.put(event.request, res.clone())
-						      return res
-					      })
-			      })
+			fetch(event.request)
+				.then(res => {
+					const clonedRes = res.clone()
+					clonedRes.json()
+					         .then(data => {
+						         for (const key in data) {
+							         dbPromise.then(db => {
+								         const tx = db.transaction('posts', 'readwrite')
+								         const store = tx.objectStore('posts')
+								         store.put(data[key])
+								         return tx.complete
+							         })
+						         }
+					         })
+					return res
+				})
 		)
 	} else if (isInArray(event.request, STATIC_FILES)) {
 		// Cache-only strategy
@@ -104,6 +124,55 @@ self.addEventListener('fetch', (event) => {
 		)
 	}
 })
+
+// With cache
+// self.addEventListener('fetch', (event) => {
+// 	const url = 'https://httpbin.org/get'
+//
+// 	if (event.request.url.indexOf(url) > -1) {
+// 		event.respondWith(
+// 			caches.open(CACHE_DYNAMIC_NAME)
+// 			      .then(cache => {
+// 				      return fetch(event.request)
+// 					      .then(res => {
+// 						      cache.put(event.request, res.clone())
+// 						      return res
+// 					      })
+// 			      })
+// 		)
+// 	} else if (isInArray(event.request, STATIC_FILES)) {
+// 		// Cache-only strategy
+// 		event.respondWith(caches.match(event.request))
+// 	} else {
+// 		event.respondWith(
+// 			caches.match(event.request)
+// 			      .then((response) => {
+// 				      if (response) {
+// 					      return response
+// 				      } else {
+// 					      return fetch(event.request)
+// 						      .then(res => {
+// 							      return caches.open('dynamic')
+// 							                   .then(cache => {
+// 								                   cache.put(event.request.url, res.clone())
+// 								                   return res
+// 							                   })
+// 							                   .catch()
+// 						      })
+// 						      .catch(error => {
+// 							      return caches.open(CACHE_STATIC_NAME)
+// 							                   .then(cache => {
+// 								                   if (event.request.headers.get('accept').includes('text/html')) {
+// 									                   return cache.match('/offline.html')
+// 								                   }
+// 							                   })
+// 						      })
+// 				      }
+// 			      })
+// 			      .catch()
+// 		)
+// 	}
+// })
 
 function isInArray(str, array) {
 	let cachePath;
