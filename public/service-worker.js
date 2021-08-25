@@ -6,7 +6,7 @@ const CACHE_DYNAMIC_NAME = 'dynamic-v2'
 const STATIC_FILES = ['/',
                       '/index.html',
                       '/offline.html',
-                      '/src/js/app.js',
+                      '/src/app.js',
                       '/src/js/idb.js',
                       '/src/js/promise.js',
                       '/src/js/fetch.js',
