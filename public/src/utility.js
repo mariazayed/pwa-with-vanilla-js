@@ -14,3 +14,12 @@ function writeData(store, data) {
 		return tx.complete
 	})
 }
+
+function readAllData(store) {
+	return dbPromise
+		.then((db) => {
+			const tx = db.transaction(store, 'readonly')
+			const st = tx.objectStore(store)
+			return st.getAll()
+		})
+}

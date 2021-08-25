@@ -167,23 +167,34 @@ let isNetworkDataReceived = false
 // 		updateUI(dataArray)
 // 	});
 
-// Check if the caches supported by the browser
-if ('caches' in window) {
-	caches.match(url)
-	      .then(response => {
-		      if (response) {
-			      return response.json()
-		      }
-	      })
-	      .then(data => {
-		      // console.log("data", data);
-		      // if (!isNetworkDataReceived) {
-		      //     let dataArray = []
-		      //     for (let key in data) {
-		      //       dataArray.push(data[key])
-		      //     }
-		      //     console.log("dataArray", dataArray);
-		      //     updateUI(dataArray)
-		      // }
-	      })
+// Check if the indexedDB supported by the browser
+if ('indexedDb' in window) {
+	readAllData('posts')
+		.then((data) => {
+			if (!isNetworkDataReceived) {
+				console.log("FROM CACHE", data);
+				updateUI(data)
+			}
+		})
 }
+
+// Check if the caches supported by the browser
+// if ('caches' in window) {
+// 	caches.match(url)
+// 	      .then(response => {
+// 		      if (response) {
+// 			      return response.json()
+// 		      }
+// 	      })
+// 	      .then(data => {
+// 		      // console.log("data", data);
+// 		      // if (!isNetworkDataReceived) {
+// 		      //     let dataArray = []
+// 		      //     for (let key in data) {
+// 		      //       dataArray.push(data[key])
+// 		      //     }
+// 		      //     console.log("dataArray", dataArray);
+// 		      //     updateUI(dataArray)
+// 		      // }
+// 	      })
+// }
