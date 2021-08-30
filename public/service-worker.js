@@ -1,5 +1,7 @@
 importScripts('/src/js/idb.js')
 importScripts('/src/utility.js')
+importScripts('https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js')
+importScripts('https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js')
 
 const CACHE_STATIC_NAME = 'static-v2'
 const CACHE_DYNAMIC_NAME = 'dynamic-v2'
@@ -16,6 +18,15 @@ const STATIC_FILES = ['/',
                       'https://fonts.googleapis.com/icon?family=Material+Icons',
                       'https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.3.0/material.indigo-pink.min.css'
 ]
+
+const firebaseConfig = {
+	apiKey: "AIzaSyC2l_vkZzvYTMMTE1tFI_6aYg03rSpaPz0",
+	authDomain: "pwa-vanilla-js.firebaseapp.com",
+	projectId: "pwa-vanilla-js",
+	storageBucket: "pwa-vanilla-js.appspot.com",
+	messagingSenderId: "800674186660",
+	appId: "1:800674186660:web:f1922ee22922814e916d31"
+};
 
 // Use case: if the cache items exceeded the maximum, delete the oldest cached items
 function deleteCache(cacheName, maxItems) {
@@ -62,57 +73,95 @@ self.addEventListener('activate', (event) => {
 	return self.clients.claim()
 })
 
-// With indexed DB
-self.addEventListener('fetch', (event) => {
-	const url = 'https://httpbin.org/get'
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore()
+const colRef = db.collection('posts')
+const postsSnapshot = colRef.get();
+postsSnapshot
+	.then(res => {
+		isNetworkDataReceived = true
+		const postsList = res.docs.map(res1 => res1.data());
+		console.log("postsList", postsList);
+		// updateUI(postsList)
 
-	if (event.request.url.indexOf(url) > -1) {
-		event.respondWith(
-			fetch(event.request)
-				.then(res => {
-					const clonedRes = res.clone()
-					clonedRes.json()
-					         .then(data => {
-						         for (const key in data) {
-							         writeData('posts', data[key])
-						         }
-					         })
-					return res
-				})
-		)
-	} else if (isInArray(event.request, STATIC_FILES)) {
-		// Cache-only strategy
-		event.respondWith(caches.match(event.request))
-	} else {
-		event.respondWith(
-			caches.match(event.request)
-			      .then((response) => {
-				      if (response) {
-					      return response
-				      } else {
-					      return fetch(event.request)
-						      .then(res => {
-							      return caches.open('dynamic')
-							                   .then(cache => {
-								                   // cache.put(event.request.url, res.clone())
-								                   return res
-							                   })
-							                   .catch()
-						      })
-						      .catch(error => {
-							      return caches.open(CACHE_STATIC_NAME)
-							                   .then(cache => {
-								                   if (event.request.headers.get('accept').includes('text/html')) {
-									                   return cache.match('/offline.html')
-								                   }
-							                   })
-						      })
-				      }
-			      })
-			      .catch()
-		)
-	}
-})
+		// const clonedRes = res.clone()
+		clearAllData('posts')
+			.then(() => {
+				return res.json()
+			})
+			.then(data => {
+				for (const key in data) {
+					writeData('posts', data[key])
+					// .then(() => {
+					// deleteItemFromIndexedDB('posts', key)
+					// })
+				}
+			})
+		return res
+	})
+	.catch(err => {
+		console.log("err", err);
+	})
+
+
+// With indexed DB
+// self.addEventListener('fetch', (event) => {
+// 	// Replace the URL with the DB URL
+// 	const url = 'https://httpbin.org/get'
+//
+// 	if (event.request.url.indexOf(url) > -1) {
+// 		event.respondWith(
+// 			fetch(event.request)
+// 				.then(res => {
+// 					const clonedRes = res.clone()
+// 					clearAllData('posts')
+// 						.then(() => {
+// 							return clonedRes.json()
+// 						})
+// 						.then(data => {
+// 							for (const key in data) {
+// 								writeData('posts', data[key])
+// 									.then(() => {
+// 										// deleteItemFromIndexedDB('posts', key)
+// 									})
+// 							}
+// 						})
+// 					return res
+// 				})
+// 		)
+// 	} else if (isInArray(event.request, STATIC_FILES)) {
+// 		// Cache-only strategy
+// 		event.respondWith(caches.match(event.request))
+// 	} else {
+// 		event.respondWith(
+// 			caches.match(event.request)
+// 			      .then((response) => {
+// 				      if (response) {
+// 					      return response
+// 				      } else {
+// 					      return fetch(event.request)
+// 						      .then(res => {
+// 							      return caches.open('dynamic')
+// 							                   .then(cache => {
+// 								                   // cache.put(event.request.url, res.clone())
+// 								                   return res
+// 							                   })
+// 							                   .catch()
+// 						      })
+// 						      .catch(error => {
+// 							      return caches.open(CACHE_STATIC_NAME)
+// 							                   .then(cache => {
+// 								                   if (event.request.headers.get('accept').includes('text/html')) {
+// 									                   return cache.match('/offline.html')
+// 								                   }
+// 							                   })
+// 						      })
+// 				      }
+// 			      })
+// 			      .catch()
+// 		)
+// 	}
+// })
 
 // With cache
 // self.addEventListener('fetch', (event) => {

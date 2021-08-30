@@ -23,3 +23,26 @@ function readAllData(store) {
 			return st.getAll()
 		})
 }
+
+function clearAllData(store) {
+	return dbPromise
+		.then(db => {
+			const tx = db.transaction(store, 'readwrite')
+			const st = tx.objectStore(store)
+			st.clear()
+			return tx.complete;
+		})
+}
+
+function deleteItemFromIndexedDB(store, id) {
+	return dbPromise
+		.then(db => {
+			const tx = db.transaction(store, 'readwrite')
+			const st = tx.objectStore(store)
+			st.delete(id)
+			return tx.complete
+		})
+		.then(() => {
+			console.log("Item deleted");
+		})
+}
