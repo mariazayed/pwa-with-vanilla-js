@@ -100,7 +100,7 @@ postsSnapshot
 		return res
 	})
 	.catch(err => {
-		console.error("err", err);
+		console.log("err", err);
 	})
 
 
