@@ -103,7 +103,6 @@ postsSnapshot
 		console.log("err", err);
 	})
 
-
 // With indexed DB
 // self.addEventListener('fetch', (event) => {
 // 	// Replace the URL with the DB URL
