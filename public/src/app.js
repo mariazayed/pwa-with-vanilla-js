@@ -20,30 +20,19 @@ if ('serviceWorker' in navigator) {
 let deferredPrompt;
 
 window.addEventListener('beforeinstallprompt', (e) => {
+	console.log("BEFORE INSTALL PROMPT FIRES");
+
 	// Prevent the mini-infobar from appearing on mobile
 	e.preventDefault();
-	// Stash the event so it can be triggered later.
+
 	deferredPrompt = e;
-	// Update UI notify the user they can install the PWA
-	// showInstallPromotion();
 	// Optionally, send analytics event that PWA install promo was shown.
 });
-
-//
-// let deferredPrompt;
-//
-// window.addEventListener('beforeinstallprompt', (event) => {
-// 	console.log("BEFORE INSTALL PROMPT FIRES");
-// 	event.preventDefault()
-// 	deferredPrompt = event
-// 	return false
-// })
 
 function showDeferredPrompt() {
 	if (deferredPrompt) {
 		deferredPrompt.prompt()
 		deferredPrompt.userChoice.then((res) => {
-			// console.log("RES", res)
 			if (res.outcome === 'dismissed') {
 				console.log("USER CANCELED INSTALLATION");
 			} else {
@@ -59,7 +48,6 @@ function unregisterServiceWorkers() {
 	if ('serviceWorker' in navigator) {
 		navigator.serviceWorker.getRegistrations()
 		         .then(registrations => {
-			         console.log("registrations", registrations);
 			         registrations.forEach(reg => {
 				         reg.unregister()
 			         })
@@ -77,11 +65,9 @@ unregisterSw.addEventListener('click', unregisterServiceWorkers);
 let installBanner = document.querySelector('#install-banner');
 installBanner.addEventListener('click', showDeferredPrompt);
 
-
-var sharedMomentsArea = document.querySelector('#shared-moments');
+let sharedMomentsArea = document.querySelector('#shared-moments');
 
 function onSaveButtonClicked(event) {
-	console.log("CLICKED");
 	// Check if the caches supported by the browser
 	if ('caches' in window) {
 		caches.open('user-requested')
