@@ -15,13 +15,13 @@ function getPosts() {
 	const db = firebase.firestore()
 	const colRef = db.collection('posts')
 	const postsSnapshot = colRef.get();
-	postsSnapshot.then(res => {
-		             isNetworkDataReceived = true
-		             const postsList = res.docs.map(res1 => res1.data());
-		             console.log("postsList", postsList);
-		             updateUI(postsList)
-	             })
-	             .catch(err => {
-		             console.log("err", err);
-	             })
+	return postsSnapshot.then(res => {
+		                    // isNetworkDataReceived = true
+		                    const postsList = res.docs.map(res1 => res1.data());
+		                    // console.log("postsList", postsList);
+		                    return postsList
+	                    })
+	                    .catch(err => {
+		                    console.log("err", err);
+	                    })
 }

@@ -1,5 +1,6 @@
 importScripts('/src/js/idb.js')
 importScripts('/src/utility.js')
+importScripts('/firebase.js')
 importScripts('https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js')
 importScripts('https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js')
 
@@ -18,15 +19,6 @@ const STATIC_FILES = ['/',
                       'https://fonts.googleapis.com/icon?family=Material+Icons',
                       'https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.3.0/material.indigo-pink.min.css'
 ]
-
-const firebaseConfig = {
-	apiKey: "AIzaSyC2l_vkZzvYTMMTE1tFI_6aYg03rSpaPz0",
-	authDomain: "pwa-vanilla-js.firebaseapp.com",
-	projectId: "pwa-vanilla-js",
-	storageBucket: "pwa-vanilla-js.appspot.com",
-	messagingSenderId: "800674186660",
-	appId: "1:800674186660:web:f1922ee22922814e916d31"
-};
 
 // Use case: if the cache items exceeded the maximum, delete the oldest cached items
 function deleteCache(cacheName, maxItems) {
@@ -57,51 +49,55 @@ self.addEventListener('install', (event) => {
 })
 
 // Cleaning/removing caches (except for the needed one(s))
-self.addEventListener('activate', (event) => {
-	event.waitUntil
-	     (
-		     caches.keys()
-		           .then(keys => {
-			           return Promise.all(keys.map((key) => {
-				           if (key !== CACHE_DYNAMIC_NAME) {
-					           console.log("Removing old cache", key);
-					           return caches.delete(key)
-				           }
-			           }))
-		           })
-	     )
-	return self.clients.claim()
-})
+// self.addEventListener('activate', (event) => {
+// event.waitUntil
+//      (
+// caches.keys()
+//       .then(keys => {
+//           return Promise.all(keys.map((key) => {
+//            if (key !== CACHE_DYNAMIC_NAME) {
+// 	           console.log("Removing old cache", key);
+// 	           return caches.delete(key)
+//            }
+//           }))
+//       })
+// )
+// return self.clients.claim()
+// })
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore()
-const colRef = db.collection('posts')
-const postsSnapshot = colRef.get();
-postsSnapshot
-	.then(res => {
-		isNetworkDataReceived = true
-		const postsList = res.docs.map(res1 => res1.data());
-		console.log("postsList", postsList);
-		// updateUI(postsList)
+// initFirebase()
+// const postsList = getPosts()
+// postsList.then(posts => {
+// 	console.log("posts from service worker", posts);
+// 	writeData('posts', posts)
+// })
 
-		// const clonedRes = res.clone()
-		clearAllData('posts')
-			.then(() => {
-				return res.json()
-			})
-			.then(data => {
-				for (const key in data) {
-					writeData('posts', data[key])
-					// .then(() => {
-					// deleteItemFromIndexedDB('posts', key)
-					// })
-				}
-			})
-		return res
-	})
-	.catch(err => {
-		console.log("err", err);
-	})
+// const colRef = db.collection('posts')
+// const postsSnapshot = colRef.get();
+// postsSnapshot
+// 	.then(res => {
+// 		// isNetworkDataReceived = true
+// 		const postsList = res.docs.map(res1 => res1.data());
+// 		console.log("postsList from service worker", postsList);
+// 		// clearAllData('posts')
+// 		// 	.then(() => {
+// 		// 		console.log("res", res);
+// 		// 		return res.json()
+// 		// 	})
+// 		// 	.then(data => {
+// 		console.log("data from service worker", postsList);
+// 		for (const key in postsList) {
+// 			writeData('posts', postsList[key])
+// 			// .then(() => {
+// 			// deleteItemFromIndexedDB('posts', key)
+// 			// })
+// 		}
+// 		// })
+// 		return res
+// 	})
+// 	.catch(err => {
+// 		console.log("err", err);
+// 	})
 
 // With indexed DB
 // self.addEventListener('fetch', (event) => {
