@@ -7,6 +7,8 @@
 * Supports service workers Support offline access
 * Custom HTML page for the offline pages
 * Different caching strategies
+* Working with indexedDB
+* IndexedDB + Caching strategies
 
 # Pre-requirements
 
