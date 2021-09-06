@@ -5,6 +5,8 @@
 * Supports old browsers
 * Supports safari / internet explorer / opera / chrome
 * Supports service workers Support offline access
+* Custom HTML page for the offline pages
+* Different caching strategies
 
 # Pre-requirements
 
