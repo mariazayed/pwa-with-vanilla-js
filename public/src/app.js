@@ -85,7 +85,6 @@ function showDeferredPrompt() {
 				console.log("USER ADDED TO HOME SCREEN");
 			}
 		})
-
 		deferredPrompt = null
 	}
 }
