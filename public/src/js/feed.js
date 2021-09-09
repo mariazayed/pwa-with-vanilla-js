@@ -3,6 +3,8 @@ const createPostArea = document.querySelector('#create-post');
 const closeCreatePostModalButton = document.querySelector('#close-create-post-modal-btn');
 const sharedMomentsArea = document.querySelector('#shared-moments');
 
+let networkDataReceived = false;
+
 function openCreatePostModal() {
 	// createPostArea.style.display = 'block';
 	// setTimeout(function() {
@@ -12,7 +14,7 @@ function openCreatePostModal() {
 		deferredPrompt.prompt();
 
 		deferredPrompt.userChoice.then(function (choiceResult) {
-			console.log(choiceResult.outcome);
+			// console.log(choiceResult.outcome);
 
 			if (choiceResult.outcome === 'dismissed') {
 				console.log('User cancelled installation');
@@ -45,7 +47,7 @@ closeCreatePostModalButton.addEventListener('click', closeCreatePostModal);
 
 // Currently not in use, allows to save assets in cache on demand otherwise
 function onSaveButtonClicked(event) {
-	console.log('clicked');
+	// console.log('clicked');
 	if ('caches' in window) {
 		caches.open('user-requested')
 		      .then(function (cache) {
@@ -89,7 +91,7 @@ function createCard(data) {
 
 function updateUI(data) {
 	clearCards();
-	for (const i = 0; i < data.length; i++) {
+	for (let i = 0; i < data.length; i++) {
 		createCard(data[i]);
 	}
 }
@@ -98,7 +100,7 @@ function updateUI(data) {
 initFirebase()
 const postsList = getPosts()
 postsList.then(posts => {
-	console.log("posts in app.js", posts);
+	// console.log("posts in app.js", posts);
 	updateUI(posts)
 	for (const key in posts) {
 		writeData('posts', posts[key])
@@ -126,7 +128,7 @@ if ('indexedDB' in window) {
 	readAllData('posts')
 		.then(function (data) {
 			if (!networkDataReceived) {
-				console.log('From cache', data);
+				// console.log('From cache', data);
 				updateUI(data);
 			}
 		});

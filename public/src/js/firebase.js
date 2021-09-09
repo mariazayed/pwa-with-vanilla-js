@@ -22,6 +22,6 @@ function getPosts() {
 		                    return postsList
 	                    })
 	                    .catch(err => {
-		                    console.log("err", err);
+		                    // console.log("err", err);
 	                    })
 }
