@@ -25,3 +25,9 @@ function getPosts() {
 		                    // console.log("err", err);
 	                    })
 }
+
+function insertToDb(data) {
+	return firebase.firestore()
+	               .collection("posts")
+	               .add(data)
+}

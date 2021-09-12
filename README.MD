@@ -9,6 +9,7 @@
 * Different caching strategies
 * Working with indexedDB
 * IndexedDB + Caching strategies
+* Background sync
 
 # Pre-requirements
 

@@ -2,6 +2,9 @@ const shareImageButton = document.querySelector('#share-image-button');
 const createPostArea = document.querySelector('#create-post');
 const closeCreatePostModalButton = document.querySelector('#close-create-post-modal-btn');
 const sharedMomentsArea = document.querySelector('#shared-moments');
+const form = document.querySelector('form');
+const titleInput = document.querySelector('#title')
+const locationInput = document.querySelector('#location')
 
 let networkDataReceived = false;
 
@@ -132,4 +135,58 @@ if ('indexedDB' in window) {
 				updateUI(data);
 			}
 		});
+}
+
+form.addEventListener('submit', (event) => {
+	event.preventDefault()
+
+	if (titleInput.value.trim() === '' || locationInput.value.trim() === '') {
+		alert('Enter valid data')
+		return
+	}
+
+	closeCreatePostModal()
+
+	if ('serviceWorker' in navigator && 'SyncManager' in window) {
+		navigator.serviceWorker.ready
+		         .then(sw => {
+			         const post = {
+				         id: new Date().toISOString(),
+				         title: titleInput.value,
+				         location: locationInput.value
+			         }
+
+			         writeData('sync-posts', post)
+				         .then(() => {
+					         return sw.sync.register('sync-new-posts')
+				         })
+				         .then(() => {
+					         const snackbarContainer = document.querySelector('#confirmation-toast')
+					         const data = {
+						         message: 'Your post was saved for syncing!'
+					         }
+
+					         snackbarContainer.MaterialSnackbar.showSnackbar(data)
+				         })
+				         .catch(err => {
+					         console.log("Error", err);
+				         })
+		         })
+		         .catch()
+	} else {
+		sendData()
+	}
+})
+
+function sendData() {
+	const data = {
+		id: new Date().toISOString(),
+		title: titleInput.value,
+		location: locationInput.value,
+		image: 'https://firebasestorage.googleapis.com/v0/b/pwa-vanilla-js.appspot.com/o/sf-boat.jpg?alt=media&token=e97c983f-d78c-49a3-a5a7-f375f8667170'
+	}
+
+	insertToDb(data).then(() => {
+		updateUI(data)
+	})
 }
