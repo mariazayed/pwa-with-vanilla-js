@@ -10,6 +10,7 @@
 * Working with indexedDB
 * IndexedDB + Caching strategies
 * Background sync
+* Periodic sync
 
 # Pre-requirements
 

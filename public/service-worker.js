@@ -1,25 +1,27 @@
-importScripts('/src/js/helpers/idb.js');
-importScripts('/src/js/utility.js');
-importScripts('/src/js/firebase.js');
+importScripts("/src/js/helpers/idb.js");
+importScripts("/src/js/utility.js");
+importScripts("https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js");
+importScripts("https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js");
+importScripts("/src/js/firebase.js");
 
-var CACHE_STATIC_NAME = 'static-v22';
-var CACHE_DYNAMIC_NAME = 'dynamic-v2';
+var CACHE_STATIC_NAME = "static-v22";
+var CACHE_DYNAMIC_NAME = "dynamic-v2";
 var STATIC_FILES = [
-	'/',
-	'/index.html',
-	'/offline.html',
-	'/src/js/app.js',
-	'/src/js/feed.js',
-	'/src/js/helpers/idb.js',
-	'/src/js/helpers/promise.js',
-	'/src/js/helpers/fetch.js',
-	'/src/js/helpers/material.min.js',
-	'/src/css/app.css',
-	'/src/css/feed.css',
-	'/src/images/main-image.jpg',
-	'https://fonts.googleapis.com/css?family=Roboto:400,700',
-	'https://fonts.googleapis.com/icon?family=Material+Icons',
-	'https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.3.0/material.indigo-pink.min.css'
+	"/",
+	"/index.html",
+	"/offline.html",
+	"/src/js/app.js",
+	"/src/js/feed.js",
+	"/src/js/helpers/idb.js",
+	"/src/js/helpers/promise.js",
+	"/src/js/helpers/fetch.js",
+	"/src/js/helpers/material.min.js",
+	"/src/css/app.css",
+	"/src/css/feed.css",
+	"/src/images/main-image.jpg",
+	"https://fonts.googleapis.com/css?family=Roboto:400,700",
+	"https://fonts.googleapis.com/icon?family=Material+Icons",
+	"https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.3.0/material.indigo-pink.min.css"
 ];
 
 // function trimCache(cacheName, maxItems) {
@@ -35,7 +37,7 @@ var STATIC_FILES = [
 //     })
 // }
 
-self.addEventListener('install', function (event) {
+self.addEventListener("install", function (event) {
 	// console.log('[Service Worker] Installing Service Worker ...', event);
 	event.waitUntil(
 		caches.open(CACHE_STATIC_NAME)
@@ -43,10 +45,10 @@ self.addEventListener('install', function (event) {
 			      // console.log('[Service Worker] Precaching App Shell');
 			      cache.addAll(STATIC_FILES);
 		      })
-	)
+	);
 });
 
-self.addEventListener('activate', function (event) {
+self.addEventListener("activate", function (event) {
 	// console.log('[Service Worker] Activating Service Worker ....', event);
 	event.waitUntil(
 		caches.keys()
@@ -73,20 +75,20 @@ function isInArray(string, array) {
 	return array.indexOf(cachePath) > -1;
 }
 
-self.addEventListener('fetch', function (event) {
+self.addEventListener("fetch", function (event) {
 
-	var url = 'https://pwagram-99adf.firebaseio.com/posts';
+	var url = "https://pwagram-99adf.firebaseio.com/posts";
 	if (event.request.url.indexOf(url) > -1) {
 		event.respondWith(fetch(event.request)
 			                  .then(function (res) {
 				                  var clonedRes = res.clone();
-				                  clearAllData('posts')
+				                  clearAllData("posts")
 					                  .then(function () {
 						                  return clonedRes.json();
 					                  })
 					                  .then(function (data) {
 						                  for (var key in data) {
-							                  writeData('posts', data[key])
+							                  writeData("posts", data[key]);
 						                  }
 					                  });
 				                  return res;
@@ -110,13 +112,13 @@ self.addEventListener('fetch', function (event) {
 								                   // trimCache(CACHE_DYNAMIC_NAME, 3);
 								                   // cache.put(event.request.url, res.clone());
 								                   return res;
-							                   })
+							                   });
 						      })
 						      .catch(function (err) {
 							      return caches.open(CACHE_STATIC_NAME)
 							                   .then(function (cache) {
-								                   if (event.request.headers.get('accept').includes('text/html')) {
-									                   return cache.match('/offline.html');
+								                   if (event.request.headers.get("accept").includes("text/html")) {
+									                   return cache.match("/offline.html");
 								                   }
 							                   });
 						      });
@@ -182,33 +184,33 @@ self.addEventListener('fetch', function (event) {
 //   );
 // });
 
-self.addEventListener('sync', (event) => {
+self.addEventListener("sync", (event) => {
 	console.log("BG SYNC", event);
 
-	if (event.tag === 'sync-new-posts') {
+	if (event.tag === "sync-new-posts") {
 		event.waitUntil(
-			readAllData('sync-posts')
+			readAllData("sync-posts")
 				.then(data => {
 					for (const dataObj of data) {
 						const tempData = {
 							id: dataObj.id,
 							title: dataObj.title,
 							location: dataObj.location,
-							image: 'https://firebasestorage.googleapis.com/v0/b/pwa-vanilla-js.appspot.com/o/sf-boat.jpg?alt=media&token=e97c983f-d78c-49a3-a5a7-f375f8667170'
-						}
+							image: "https://firebasestorage.googleapis.com/v0/b/pwa-vanilla-js.appspot.com/o/sf-boat.jpg?alt=media&token=e97c983f-d78c-49a3-a5a7-f375f8667170"
+						};
 
 						insertToDb(tempData).then((res) => {
 							console.log("res", res);
 							// Cleaning the data from the iDB
 							if (res.ok) {
-								deleteItemFromData('sync-posts', tempData.id)
+								deleteItemFromData("sync-posts", tempData.id);
 							}
-						})
+						});
 					}
 				})
 				.catch(err => {
 					console.log("Error while sending data", err);
 				})
-		)
+		);
 	}
-})
+});
