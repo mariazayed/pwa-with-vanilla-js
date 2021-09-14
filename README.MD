@@ -11,6 +11,11 @@
 * IndexedDB + Caching strategies
 * Background sync
 * Periodic sync
+* Web push notifications
+
+# To do
+
+* Change the Firebase functions to Strapi CMS with MongoDB OR NodeJs
 
 # Pre-requirements
 
