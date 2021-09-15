@@ -37,9 +37,34 @@ function askForNotificationPermission() {
 		if (result !== "granted") {
 			console.log("No notification permission granted");
 		} else {
-			displayConfirmNotification();
+			// displayConfirmNotification();
+			configurePushSub();
 		}
 	});
+}
+
+function configurePushSub() {
+	if (!("serviceworker" in navigator)) {
+		return;
+	}
+
+	let swReg;
+
+	navigator.serviceworker.ready
+	         .then((sw) => {
+		         swReg = sw;
+		         return sw.pushManager.getSubscription();
+	         })
+	         .then((sub) => {
+		         if (sub === null) {
+			         // Create new subscription
+			         swReg.pushManager.subscribe({
+				                                     userVisibleOnly: true
+			                                     });
+		         } else {
+
+		         }
+	         });
 }
 
 function displayConfirmNotification() {
@@ -54,7 +79,21 @@ function displayConfirmNotification() {
 					     dir: "ltr",
 					     lang: "en-US", // BCP 47
 					     vibrate: [100, 50, 2000],
-					     badge: "/src/images/icons/app-icon-96x96.png"
+					     badge: "/src/images/icons/app-icon-96x96.png",
+					     tag: "confirm-notification",
+					     renotify: true,
+					     actions: [
+						     {
+							     action: "confirm",
+							     title: "Okay",
+							     icon: "/src/images/icons/app-icon-96x96.png"
+						     },
+						     {
+							     action: "cancel",
+							     title: "Cancel",
+							     icon: "/src/images/icons/app-icon-96x96.png"
+						     },
+					     ]
 				     };
 				     sw.showNotification("Successfully Subscribed (from SW)!", options);
 			     });
