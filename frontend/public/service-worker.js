@@ -2,7 +2,7 @@ importScripts("/src/js/helpers/idb.js");
 importScripts("/src/js/utility.js");
 importScripts("https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js");
 importScripts("https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js");
-importScripts("/src/js/firebase.js");
+importScripts("/src/js/api.js");
 
 var CACHE_STATIC_NAME = "static-v22";
 var CACHE_DYNAMIC_NAME = "dynamic-v2";

@@ -12,6 +12,8 @@ export class PostController {
     public addNewPost(req: Request, res: Response) {
         let newPost = new post(req.body);
 
+        console.log('newPost', newPost);
+
         newPost.save((err, post) => {
             if (err) {
                 res.send(err);
