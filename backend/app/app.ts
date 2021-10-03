@@ -8,7 +8,7 @@ class App {
 
     public app: express.Application;
     public routes: PostRoute = new PostRoute();
-    public mongoUrl: string = 'mongodb://localhost/contactsDB';
+    public mongoUrl: string = 'mongodb://localhost/posts';
 
     constructor() {
         this.app = express();
