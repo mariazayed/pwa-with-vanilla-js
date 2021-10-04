@@ -99,17 +99,15 @@ function updateUI(data) {
 	}
 }
 
-// Firebase initialization
-initFirebase()
 const postsList = getPosts()
-postsList.then(posts => {
-	// console.log("posts in app.js", posts);
-	updateUI(posts)
-	for (const key in posts) {
-		writeData('posts', posts[key])
-	}
+// postsList.then(posts => {
+// 	// console.log("posts in app.js", posts);
+// 	updateUI(posts)
+// 	for (const key in posts) {
+// 		writeData('posts', posts[key])
+// 	}
+// })
 
-})
 // const url = 'https://pwagram-99adf.firebaseio.com/posts.json';
 // let networkDataReceived = false;
 //
@@ -183,7 +181,7 @@ function sendData() {
 		id: new Date().toISOString(),
 		title: titleInput.value,
 		location: locationInput.value,
-		image: 'https://firebasestorage.googleapis.com/v0/b/pwa-vanilla-js.appspot.com/o/sf-boat.jpg?alt=media&token=e97c983f-d78c-49a3-a5a7-f375f8667170'
+		image: '/src/images/icons/sf-boat.png'
 	}
 
 	insertToDb(data).then(() => {

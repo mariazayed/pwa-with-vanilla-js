@@ -1,7 +1,5 @@
 importScripts("/src/js/helpers/idb.js");
 importScripts("/src/js/utility.js");
-importScripts("https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js");
-importScripts("https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js");
 importScripts("/src/js/api.js");
 
 var CACHE_STATIC_NAME = "static-v22";
@@ -77,7 +75,7 @@ function isInArray(string, array) {
 
 self.addEventListener("fetch", function (event) {
 
-	var url = "https://pwagram-99adf.firebaseio.com/posts";
+	const url = "http://localhost:3000/post";
 	if (event.request.url.indexOf(url) > -1) {
 		event.respondWith(fetch(event.request)
 			                  .then(function (res) {
@@ -185,7 +183,7 @@ self.addEventListener("fetch", function (event) {
 // });
 
 self.addEventListener("sync", (event) => {
-	console.log("BG SYNC", event);
+	console.log("BG SYNC");
 
 	if (event.tag === "sync-new-posts") {
 		event.waitUntil(
@@ -196,13 +194,13 @@ self.addEventListener("sync", (event) => {
 							id: dataObj.id,
 							title: dataObj.title,
 							location: dataObj.location,
-							image: "https://firebasestorage.googleapis.com/v0/b/pwa-vanilla-js.appspot.com/o/sf-boat.jpg?alt=media&token=e97c983f-d78c-49a3-a5a7-f375f8667170"
+							image: "/src/images/icons/sf-boat.png"
 						};
 
 						insertToDb(tempData).then((res) => {
-							console.log("res", res);
+							// console.log("res", res);
 							// Cleaning the data from the iDB
-							if (res.ok) {
+							if (res) {
 								deleteItemFromData("sync-posts", tempData.id);
 							}
 						});

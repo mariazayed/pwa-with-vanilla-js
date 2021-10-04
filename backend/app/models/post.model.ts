@@ -9,9 +9,9 @@ export const PostsSchema = new Schema({
     },
     image: {
         type: String,
-        required: true,
+        // required: true,
     },
-    description: {
+    location: {
         type: String,
         required: true,
     },
